@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <windows.h>
 #include "lib.h"
+#include <fstream>
+
 using namespace std;
 
 int main()
@@ -53,16 +55,18 @@ int main()
                 primes.push_back(candidate);
         }
     }
-
-    cout << "生成された素数 p: " << primes[0] << endl;
-    cout << "生成された素数 q: " << primes[1] << endl;
+    ofstream out("keys.txt");
+    out << "生成された素数 p: " << primes[0] << endl;
+    out << "生成された素数 q: " << primes[1] << endl;
+    out << "n = p * q = " << primes[0] * primes[1] << endl;
     const int n = primes[0] * primes[1];
-    cout << "n = p * q = " << n << endl;
+    cout << "n = p * q: " << n << endl;
     const int phi = lcm(primes[0] - 1, primes[1] - 1);
-    cout << "φ(n) = lcm(p-1, q-1) = " << phi << endl;
+    out << "φ(n) = lcm(p-1, q-1) = " << phi << endl;
 
-    const int E = 17; //
+    const int E = 17; // 公開指数
     cout << "公開指数 e: " << E << endl;
+    out << "公開指数 e: " << E << endl;
     // 秘密指数 d を求める (d * E ≡ 1 (mod φ))
     int d = 0;
     for (int i = 1; i < phi; i++)
@@ -73,6 +77,7 @@ int main()
             break;
         }
     }
-    cout << "秘密指数 d: " << d << endl;
+    out << "秘密指数 d: " << d << endl;
+    out.close();
     return 0;
 }
